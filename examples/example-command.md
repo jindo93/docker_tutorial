@@ -1,6 +1,6 @@
 ## Example 'docker run' command
 
-docker run -i -t ubuntu /bin/bash
+`docker run -i -t ubuntu /bin/bash`
 
 # The following happends when you run this command:
 
