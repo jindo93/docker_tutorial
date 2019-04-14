@@ -159,4 +159,16 @@ Run `docker swarm leave --force`
 `docker swarm init` enable swarm mode
 `docker swarm join` on other machines to join the swarm as workers
 
-####
+### Stack
+
+- A stack is a group of interrelated services that share dependencies, and can be orchestrated and scaled together. A single stack is capable of defining and coordinating the functionality of an entire application (though very complex applications may want to use multiple stacks).
+
+#### Redis
+
+- Redis always runs on the manager, so it's always using the same filesystem.
+- Redis accesses an arbitrary directory in the host's file system as `/data` inside the container, which is where Redis stores data.
+  - Together, this is creating a "source of truth" in your host's physical filesystem for the Redis data. Without this, Redis would store its data in `/data` inside the container's filesystem, which would get wiped out if that container were ever redeployed.
+- The source of truth has two components:
+  1. The placement constraint you put on the Redis service, ensuring that it always uses the same host.
+  2. The volume you created that lets the container access `./data` (on the host) as `/data` (inside the Redis container).
+     While containers comde and go, the files stored on `./data` on the specified host persists, enabling continuity.
