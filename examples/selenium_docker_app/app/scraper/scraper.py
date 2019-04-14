@@ -18,7 +18,6 @@ def get_driver():
         desired_capabilities=capabilities,
         options=options
     )
-    #driver = webdriver.Chrome(options=options)
     driver.set_window_size(1440, 900)
     print('got driver')
     return driver
@@ -26,15 +25,13 @@ def get_driver():
 
 def scrape_jobs(driver, job_title):
 
-    # job_title = 'data scientist'
-
     ip = IndeedPage(driver=driver)
     ip.go()
     ip.search_input.input_text(job_title)
     ip.search_job_button.click()
 
     job_details = []
-    print('scraping starts')
+    print('\n Scraping for "{0}" starts'.format(job_title)+'\n')
     while ip.next_page_button:
         job_details.extend(ip.get_job_details(ip.get_job_cards))
         ip.next_page_button.click_next_page()
